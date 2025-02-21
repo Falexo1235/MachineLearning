@@ -33,7 +33,7 @@ for dataset in datasets:
     for col in categorical_columns:
         dataset[col].fillna('Unknown', inplace=True)
         
-    dataset.drop(['Name', 'Cabin'], axis=1, inplace=True)
+    dataset.drop(['Name', 'Cabin', 'PassengerId'], axis=1, inplace=True)
         
     dataset = pd.get_dummies(dataset, columns=categorical_columns, drop_first=True)
 logging.info("Предобработка данных завершена")
@@ -51,9 +51,8 @@ categorical_features_indices = [
     'Deck', 
     'CabinNumber',
     'Side', 
-    'Group', 
-    'Prefix'
-]
+    'Group'
+    ]
 
 def objective(trial):
     X=train.drop('Transported', axis=1)
