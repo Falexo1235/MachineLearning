@@ -6,12 +6,12 @@ from catboost import CatBoostClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 import optuna
+from google.colab import drive
+drive.mount('/content/drive')
 
-# Настройка логирования
 logging.basicConfig(filename='./data/output/log_file.log', level=logging.INFO, 
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Загрузка данных
 train = pd.read_csv('./data/input/train.csv')
 test = pd.read_csv('./data/input/test.csv')
 datasets =[train,test]
@@ -124,8 +124,18 @@ print(classification_report(y_validation, y_pred))
 model_names = ['Catboost_tuned']
 result_df6 = pd.DataFrame({'Accuracy':accuracy}, index=model_names)
 result_df6
+model.save_model('catboost_model.cbm')
+logging.info("Модель сохранена в файл catboost_model.cbm")
 
 submission = pd.DataFrame()
 submission['PassengerId'] = X_test['PassengerId']
 submission['Transported'] = model.predict(X_test)
 submission.to_csv('submission.csv', index=False)
+
+logging.info("Файл submission.csv сохранён")
+
+google_drive_path = '/content/drive/MyDrive/MachineLearning'
+
+shutil.copy('catboost_model.cbm', google_drive_path)
+shutil.copy('submission.csv', google_drive_path)
+logging.info(f"Файлы сохранены в Google Drive: {google_drive_path}")
