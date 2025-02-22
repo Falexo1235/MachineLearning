@@ -34,7 +34,7 @@ for dataset in datasets:
         
     dataset.drop(['Name', 'Cabin'], axis=1, inplace=True)
         
-    dataset = pd.get_dummies(dataset, columns=categorical_columns, drop_first=True)
+    #dataset = pd.get_dummies(dataset, columns=categorical_columns, drop_first=True)
 
 train.drop(['PassengerId'], axis=1, inplace=True)
 
@@ -55,6 +55,8 @@ categorical_features_indices = [
     'Side', 
     'Group'
     ]
+
+
 
 def objective(trial):
     X=train.drop('Transported', axis=1)
@@ -89,7 +91,7 @@ def objective(trial):
 
 if __name__ == "__main__":
     study = optuna.create_study(direction="maximize")
-    study.optimize(objective, n_trials=50, timeout=360)
+    study.optimize(objective, n_trials=60, timeout=360)
 
     print("Number of finished trials: {}".format(len(study.trials)))
 
@@ -102,14 +104,18 @@ if __name__ == "__main__":
     for key, value in trial.params.items():
         print("    {}: {}".format(key, value))
 
+logging.info("Обучение завершено")
+
+
 accuracy =[]
 model_names =[]
 
+logging.info("Подготовка данных для теста")
 
 X=train.drop('Transported', axis=1)
 y=train['Transported']
 X_train, X_validation, y_train, y_validation = train_test_split(X, y, train_size=0.75, random_state=42)
-X_test=test
+X_test=test.drop('PassengerId', axis=1)
 
 model = CatBoostClassifier(verbose=False,random_state=42,
     objective= 'CrossEntropy',
@@ -121,23 +127,24 @@ model = CatBoostClassifier(verbose=False,random_state=42,
 model.fit(X_train, y_train,cat_features=categorical_features_indices,eval_set=(X_validation, y_validation))
 y_pred = model.predict(X_validation)
 accuracy.append(round(accuracy_score(y_validation, y_pred),4))
+logging.info(f"Точность модели на валидационной выборке: {accuracy[-1]}")
 print(classification_report(y_validation, y_pred))
 
 model_names = ['Catboost_tuned']
 result_df6 = pd.DataFrame({'Accuracy':accuracy}, index=model_names)
 result_df6
-model.save_model('catboost_model.cbm')
+model.save_model('./model/catboost_model.cbm')
 logging.info("Модель сохранена в файл catboost_model.cbm")
 
 submission = pd.DataFrame()
-submission['PassengerId'] = X_test['PassengerId']
+submission['PassengerId'] = test['PassengerId']
 submission['Transported'] = model.predict(X_test)
-submission.to_csv('submission.csv', index=False)
+submission.to_csv('./data/outputsubmission.csv', index=False)
 
 logging.info("Файл submission.csv сохранён")
 
 google_drive_path = '/content/drive/MyDrive/MachineLearning'
 
-shutil.copy('catboost_model.cbm', google_drive_path)
-shutil.copy('submission.csv', google_drive_path)
+shutil.copy('./model/catboost_model.cbm', google_drive_path)
+shutil.copy('./data/output/submission.csv', google_drive_path)
 logging.info(f"Файлы сохранены в Google Drive: {google_drive_path}")
