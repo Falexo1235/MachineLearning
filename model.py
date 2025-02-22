@@ -2,19 +2,18 @@ import numpy as np
 import pandas as pd
 import os
 import logging
+import shutil
 from catboost import CatBoostClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 import optuna
-from google.colab import drive
-drive.mount('/content/drive')
 
 logging.basicConfig(filename='./data/output/log_file.log', level=logging.INFO, 
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 train = pd.read_csv('./data/input/train.csv')
 test = pd.read_csv('./data/input/test.csv')
-datasets =[train,test]
+datasets=[train,test]
 
 logging.info("Начало предобработки данных")
 for dataset in datasets:
@@ -33,9 +32,12 @@ for dataset in datasets:
     for col in categorical_columns:
         dataset[col].fillna('Unknown', inplace=True)
         
-    dataset.drop(['Name', 'Cabin', 'PassengerId'], axis=1, inplace=True)
+    dataset.drop(['Name', 'Cabin'], axis=1, inplace=True)
         
     dataset = pd.get_dummies(dataset, columns=categorical_columns, drop_first=True)
+
+train.drop(['PassengerId'], axis=1, inplace=True)
+
 logging.info("Предобработка данных завершена")
 
 nulls = train.isnull().sum(axis=0)
