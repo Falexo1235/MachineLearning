@@ -138,13 +138,9 @@ logging.info("Модель сохранена в файл catboost_model.cbm")
 
 submission = pd.DataFrame()
 submission['PassengerId'] = test['PassengerId']
-submission['Transported'] = model.predict(X_test)
-submission.to_csv('./data/outputsubmission.csv', index=False)
+predictions = model.predict(X_test)
+submission['Transported'] = [bool(pred) for pred in predictions]
+submission.to_csv('./data/output/submission.csv', index=False)
 
 logging.info("Файл submission.csv сохранён")
 
-google_drive_path = '/content/drive/MyDrive/MachineLearning'
-
-shutil.copy('./model/catboost_model.cbm', google_drive_path)
-shutil.copy('./data/output/submission.csv', google_drive_path)
-logging.info(f"Файлы сохранены в Google Drive: {google_drive_path}")
