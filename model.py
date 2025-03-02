@@ -70,7 +70,7 @@ class SpaceshipTitanicModel:
         logging.info("Предобработка данных завершена")
         return df
     
-    def _optimize_hyperparameters(self, X, y, use_gpu, n_trials=10, timeout=3600):
+    def _optimize_hyperparameters(self, X, y, use_gpu, n_trials, timeout=3600):
         def objective(trial):
             params = {
                 'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.1),
@@ -112,7 +112,7 @@ class SpaceshipTitanicModel:
             
         return trial.params
     
-    def train(self, dataset, use_gpu=False):
+    def train(self, dataset, use_gpu=False, n_trials=10):
         if use_gpu:
             use_gpu = self._check_gpu_support()
         logging.info(f"Начало обучения модели с датасетом: {dataset}")
@@ -128,7 +128,7 @@ class SpaceshipTitanicModel:
         y = train_data['Transported']
         
         logging.info("Начало оптимизации гиперпараметров")
-        best_params = self._optimize_hyperparameters(X, y, use_gpu)
+        best_params = self._optimize_hyperparameters(X, y, use_gpu, n_trials)
         logging.info("Оптимизация гиперпараметров завершена")
         
         logging.info("Обучение финальной модели")
