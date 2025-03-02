@@ -37,10 +37,14 @@ class SpaceshipTitanicModel:
 
     def _check_gpu_support(self):
         """Проверяет доступность GPU через CatBoost."""
+        logging.info("Проверка поддержки GPU...")
         try:
             from catboost.utils import get_gpu_device_count
+            if (get_gpu_device_count() == 0):
+                logging.info("GPU не поддерживается, --use_gpu=False")
             return get_gpu_device_count() > 0
         except:
+            logging.info("GPU не поддерживается, --use_gpu=False")
             return False
 
     def _preprocess_data(self, dataset):
