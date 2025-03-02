@@ -9,7 +9,7 @@ from sklearn.metrics import accuracy_score, classification_report, roc_auc_score
 import optuna
 import fire
 from catboost.utils import get_gpu_device_count
-import torch
+
 
 logging.basicConfig(
     filename='./data/output/log_file.log', 
@@ -36,14 +36,12 @@ class SpaceshipTitanicModel:
         self.model_path = './model/catboost_model.cbm'
 
     def _check_gpu_support(self):
-        """Проверяет, доступна ли GPU для CatBoost."""
-        if not torch.cuda.is_available():
-            logging.warning("CUDA не доступна. GPU не будет использоваться.")
+        """Проверяет доступность GPU через CatBoost."""
+        try:
+            from catboost.utils import get_gpu_device_count
+            return get_gpu_device_count() > 0
+        except:
             return False
-        if get_gpu_device_count() == 0:
-            logging.warning("CatBoost не обнаружил GPU. Будет использоваться CPU.")
-            return False
-        return True
 
     def _preprocess_data(self, dataset):
         logging.info("Начало предобработки данных")
@@ -70,37 +68,14 @@ class SpaceshipTitanicModel:
     
     def _optimize_hyperparameters(self, X, y, use_gpu, n_trials=10, timeout=3600):
         def objective(trial):
-            grow_policy = trial.suggest_categorical("grow_policy", ["SymmetricTree", "Lossguide"])
-            
-            boosting_type = trial.suggest_categorical("boosting_type", ["Ordered", "Plain"])
-            
-            if grow_policy == "SymmetricTree" and boosting_type not in ["Ordered", "Plain"]:
-                raise optuna.TrialPruned()
-            if grow_policy == "Lossguide" and boosting_type != "Plain":
-                raise optuna.TrialPruned()
-
             params = {
-                "objective": trial.suggest_categorical("objective", ["Logloss", "CrossEntropy"]),
-                "colsample_bylevel": 1.0 if use_gpu else trial.suggest_float("colsample_bylevel", 0.01, 1.0),
-                "depth": trial.suggest_int("depth", 1, 16),
-                "boosting_type": boosting_type,
-                "bootstrap_type": trial.suggest_categorical("bootstrap_type", ["Bayesian", "Bernoulli", "MVS"]),
-                "l2_leaf_reg": trial.suggest_float("l2_leaf_reg", 1e-8, 10.0, log=True),
-                "learning_rate": trial.suggest_float("learning_rate", 0.005, 0.5, log=True),
-                "random_strength": trial.suggest_float("random_strength", 1e-8, 10.0, log=True),
-                "min_data_in_leaf": trial.suggest_int("min_data_in_leaf", 1, 100),
-                "grow_policy": grow_policy,
-                "task_type": "GPU" if use_gpu else "CPU",
-                "devices": "0" if use_gpu else None,
+                'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.1),
+                'depth': trial.suggest_int('depth', 3, 10),
+                'l2_leaf_reg': trial.suggest_float('l2_leaf_reg', 1, 10),
+                'boosting_type': trial.suggest_categorical('boosting_type', ['Ordered', 'Plain']),
+                'max_ctr_complexity': trial.suggest_int('max_ctr_complexity', 0, 8)
             }
 
-            if params["grow_policy"] == "Lossguide":
-                params["max_leaves"] = trial.suggest_int("max_leaves", 2, 256)
-            
-            if params["bootstrap_type"] == "Bayesian":
-                params["bagging_temperature"] = trial.suggest_float("bagging_temperature", 0, 10)
-            elif params["bootstrap_type"] == "Bernoulli":
-                params["subsample"] = trial.suggest_float("subsample", 0.1, 1)
 
             cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
             cv_scores = []
