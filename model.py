@@ -186,9 +186,8 @@ class SpaceshipTitanicModel:
         predictions = model.predict(X_test)
         
         submission = pd.DataFrame()
-        predictions = model.predict(X_test)
+        submission['PassengerId'] = passenger_ids
         submission['Transported'] = [bool(pred) for pred in predictions]
-        submission.to_csv('./data/output/submission.csv', index=False)
         
         output_path = './data/output/submission.csv'
         submission.to_csv(output_path, index=False)
