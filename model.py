@@ -3,11 +3,13 @@ import pandas as pd
 import os
 import logging
 import shutil
-from catboost import CatBoostClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
+from catboost import CatBoostClassifier, Pool
+from sklearn.model_selection import train_test_split, StratifiedKFold
+from sklearn.metrics import accuracy_score, classification_report, roc_auc_score
 import optuna
 import fire
+from catboost.utils import get_gpu_device_count
+import torch
 
 logging.basicConfig(
     filename='./data/output/log_file.log', 
@@ -32,7 +34,17 @@ class SpaceshipTitanicModel:
         ]
         
         self.model_path = './model/catboost_model.cbm'
-    
+
+    def _check_gpu_support(self):
+        """Проверяет, доступна ли GPU для CatBoost."""
+        if not torch.cuda.is_available():
+            logging.warning("CUDA не доступна. GPU не будет использоваться.")
+            return False
+        if get_gpu_device_count() == 0:
+            logging.warning("CatBoost не обнаружил GPU. Будет использоваться CPU.")
+            return False
+        return True
+
     def _preprocess_data(self, dataset):
         logging.info("Начало предобработки данных")
         
@@ -46,51 +58,67 @@ class SpaceshipTitanicModel:
         df['Side'] = df['Cabin'].apply(lambda x: x.split('/')[2] if pd.notnull(x) else 'Unknown')
             
         numerical_columns = ['Age', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck']
-        for col in numerical_columns:
-            df[col].fillna(df[col].mean(), inplace=True)
+        df[numerical_columns] = df[numerical_columns].fillna(df[numerical_columns].mean())
             
         categorical_columns = ['HomePlanet', 'CryoSleep', 'Destination', 'VIP', 'Deck', 'Side']
-        for col in categorical_columns:
-            df[col].fillna('Unknown', inplace=True)
+        df[categorical_columns] = df[categorical_columns].fillna('Unknown')
             
         df.drop(['Name', 'Cabin'], axis=1, inplace=True)
         
         logging.info("Предобработка данных завершена")
         return df
     
-    def _optimize_hyperparameters(self, X, y, n_trials=60, timeout=360):
+    def _optimize_hyperparameters(self, X, y, use_gpu, n_trials=10, timeout=3600):
         def objective(trial):
-            X_train, X_validation, y_train, y_validation = train_test_split(X, y, train_size=0.75, random_state=42)
+            grow_policy = trial.suggest_categorical("grow_policy", ["SymmetricTree", "Lossguide"])
+            
+            boosting_type = trial.suggest_categorical("boosting_type", ["Ordered", "Plain"])
+            
+            if grow_policy == "SymmetricTree" and boosting_type not in ["Ordered", "Plain"]:
+                raise optuna.TrialPruned()
+            if grow_policy == "Lossguide" and boosting_type != "Plain":
+                raise optuna.TrialPruned()
 
-            param = {
+            params = {
                 "objective": trial.suggest_categorical("objective", ["Logloss", "CrossEntropy"]),
-                "colsample_bylevel": trial.suggest_float("colsample_bylevel", 0.01, 0.1),
-                "depth": trial.suggest_int("depth", 1, 12),
-                "boosting_type": trial.suggest_categorical("boosting_type", ["Ordered", "Plain"]),
-                "bootstrap_type": trial.suggest_categorical(
-                    "bootstrap_type", ["Bayesian", "Bernoulli", "MVS"]
-                )
+                "colsample_bylevel": 1.0 if use_gpu else trial.suggest_float("colsample_bylevel", 0.01, 1.0),
+                "depth": trial.suggest_int("depth", 1, 16),
+                "boosting_type": boosting_type,
+                "bootstrap_type": trial.suggest_categorical("bootstrap_type", ["Bayesian", "Bernoulli", "MVS"]),
+                "l2_leaf_reg": trial.suggest_float("l2_leaf_reg", 1e-8, 10.0, log=True),
+                "learning_rate": trial.suggest_float("learning_rate", 0.005, 0.5, log=True),
+                "random_strength": trial.suggest_float("random_strength", 1e-8, 10.0, log=True),
+                "min_data_in_leaf": trial.suggest_int("min_data_in_leaf", 1, 100),
+                "grow_policy": grow_policy,
+                "task_type": "GPU" if use_gpu else "CPU",
+                "devices": "0" if use_gpu else None,
             }
 
-            if param["bootstrap_type"] == "Bayesian":
-                param["bagging_temperature"] = trial.suggest_float("bagging_temperature", 0, 10)
-            elif param["bootstrap_type"] == "Bernoulli":
-                param["subsample"] = trial.suggest_float("subsample", 0.1, 1)
+            if params["grow_policy"] == "Lossguide":
+                params["max_leaves"] = trial.suggest_int("max_leaves", 2, 256)
+            
+            if params["bootstrap_type"] == "Bayesian":
+                params["bagging_temperature"] = trial.suggest_float("bagging_temperature", 0, 10)
+            elif params["bootstrap_type"] == "Bernoulli":
+                params["subsample"] = trial.suggest_float("subsample", 0.1, 1)
 
-            cat_cls = CatBoostClassifier(**param)
-            cat_cls.fit(
-                X_train, 
-                y_train, 
-                eval_set=[(X_validation, y_validation)], 
-                cat_features=self.categorical_features_indices,
-                verbose=0, 
-                early_stopping_rounds=100
-            )
+            cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+            cv_scores = []
 
-            preds = cat_cls.predict(X_validation)
-            pred_labels = np.rint(preds)
-            accuracy = accuracy_score(y_validation, pred_labels)
-            return accuracy
+            for train_idx, val_idx in cv.split(X, y):
+                X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
+                y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
+
+                train_data = Pool(data=X_train, label=y_train, cat_features=self.categorical_features_indices)
+                val_data = Pool(data=X_val, label=y_val, cat_features=self.categorical_features_indices)
+
+                model = CatBoostClassifier(**params, verbose=0)
+                model.fit(train_data, eval_set=val_data, early_stopping_rounds=100, verbose=0)
+
+                preds = model.predict_proba(X_val)[:, 1]
+                cv_scores.append(roc_auc_score(y_val, preds))
+
+            return np.mean(cv_scores)
 
         study = optuna.create_study(direction="maximize")
         study.optimize(objective, n_trials=n_trials, timeout=timeout)
@@ -105,8 +133,11 @@ class SpaceshipTitanicModel:
             
         return trial.params
     
-    def train(self, dataset):
+    def train(self, dataset, use_gpu=False):
+        if use_gpu:
+            use_gpu = self._check_gpu_support()
         logging.info(f"Начало обучения модели с датасетом: {dataset}")
+        logging.info(f"Использование GPU: {use_gpu}")
         
         train_data = pd.read_csv(dataset)
         train_data = self._preprocess_data(train_data)
@@ -118,37 +149,42 @@ class SpaceshipTitanicModel:
         y = train_data['Transported']
         
         logging.info("Начало оптимизации гиперпараметров")
-        best_params = self._optimize_hyperparameters(X, y)
+        best_params = self._optimize_hyperparameters(X, y, use_gpu)
         logging.info("Оптимизация гиперпараметров завершена")
         
         logging.info("Обучение финальной модели")
-        X_train, X_validation, y_train, y_validation = train_test_split(X, y, train_size=0.75, random_state=42)
+        X_train, X_validation, y_train, y_validation = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+        
+        train_pool = Pool(data=X_train, label=y_train, cat_features=self.categorical_features_indices)
+        val_pool = Pool(data=X_validation, label=y_validation, cat_features=self.categorical_features_indices)
         
         model = CatBoostClassifier(
-            verbose=False,
-            random_state=42,
+            iterations=10000,
+            early_stopping_rounds=100,
+            verbose=100,
+            task_type="GPU" if use_gpu else "CPU",
+            devices='0' if use_gpu else None,
             **best_params
         )
         
-        model.fit(
-            X_train, 
-            y_train,
-            cat_features=self.categorical_features_indices,
-            eval_set=(X_validation, y_validation)
-        )
+        model.fit(train_pool, eval_set=val_pool)
         
         y_pred = model.predict(X_validation)
+        y_pred_proba = model.predict_proba(X_validation)[:, 1]
         accuracy = round(accuracy_score(y_validation, y_pred), 4)
+        roc_auc = round(roc_auc_score(y_validation, y_pred_proba), 4)
         logging.info(f"Точность модели на валидационной выборке: {accuracy}")
+        logging.info(f"ROC AUC модели на валидационной выборке: {roc_auc}")
         print(classification_report(y_validation, y_pred))
         
         model.save_model(self.model_path)
         logging.info(f"Модель сохранена в файл {self.model_path}")
         
-        return f"Модель успешно обучена и сохранена. Точность: {accuracy}"
+        return f"Модель успешно обучена и сохранена. Точность: {accuracy}, ROC AUC: {roc_auc}"
     
-    def predict(self, dataset):
+    def predict(self, dataset, use_gpu=False):
         logging.info(f"Начало предсказания с датасетом: {dataset}")
+        logging.info(f"Использование GPU: {use_gpu}")
         
         if not os.path.exists(self.model_path):
             error_msg = f"Модель не найдена по пути {self.model_path}. Сначала выполните обучение."
@@ -172,7 +208,7 @@ class SpaceshipTitanicModel:
         
         submission = pd.DataFrame()
         submission['PassengerId'] = passenger_ids
-        submission['Transported'] = [bool(pred) for pred in predictions]
+        submission['Transported'] = predictions
         
         output_path = './data/output/submission.csv'
         submission.to_csv(output_path, index=False)
