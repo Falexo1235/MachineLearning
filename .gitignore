@@ -10,7 +10,6 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -169,3 +168,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+machinelearning/data/train.csv
+machinelearning/data/test.csv
+machinelearning/data/result.csv
+machinelearning/data/model/catboost_model.cbm
+catboost_info/
