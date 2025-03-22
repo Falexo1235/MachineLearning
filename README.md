@@ -11,12 +11,12 @@ This project is a solution for the Classic ML with Cats problem on Kaggle. The g
 | MachineLearning/
 |
 |--| machinelearning/
-|   |-- model.py
-|   |--| data/
-|       |--| model/
+|  |-- model.py
+|  |--| data/
+|     |--| model/
 |
 |--| dist/
-|   |-- machinelearning-0.1.0-py3-none-any.whl
+|  |-- machinelearning-0.1.0-py3-none-any.whl
 |
 |-- Dockerfile
 |-- pyproject.toml
@@ -24,7 +24,7 @@ This project is a solution for the Classic ML with Cats problem on Kaggle. The g
 |-- README.md
 |
 |--| notebooks/
-|   |--notebook.ipynb
+|  |--notebook.ipynb
 ```
 
 ## How to Use
