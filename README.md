@@ -59,7 +59,7 @@ docker run -v /path/to/your/data:/app/machinelearning/data machinelearning train
 docker run -v /path/to/your/data:/app/machinelearning/data -v /path/to/save/results:/app/machinelearning/data machinelearning predict --dataset=/app/machinelearning/data/test.csv
 ```
 ## My result progress:
-|  First model | After tuning args  | After 30 train iterations  |
+|  First model | After tuning params  | After 30 train iterations  |
 | ------------ | ------------ | ------------ |
 |  0.79892 |  0.80126 |  0.80360 |
 
