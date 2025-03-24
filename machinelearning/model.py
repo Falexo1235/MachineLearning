@@ -166,7 +166,7 @@ class My_Classifier_Model:
         logging.info(f"Using GPU: {use_gpu}")
         
         if not os.path.exists(self.model_path):
-            error_msg = f"Модель не найдена по пути {self.model_path}. Сначала выполните обучение."
+            error_msg = f"Model not found in path {self.model_path}. Start the training first."
             logging.error(error_msg)
             return error_msg
         
