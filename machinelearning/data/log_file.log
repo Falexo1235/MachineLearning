@@ -427,3 +427,15 @@
 2025-03-23 02:31:05,589 - INFO - Предобработка данных завершена
 2025-03-23 02:31:05,657 - INFO - Модель загружена из файла ./data/model/catboost_model.cbm
 2025-03-23 02:31:05,713 - INFO - Файл предсказаний сохранён: ./data/result.csv
+2025-03-24 15:07:27,051 - INFO - Starting prediction with dataset: ./machinelearning/data/test.csv
+2025-03-24 15:07:27,051 - INFO - Using GPU: False
+2025-03-24 15:07:39,883 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 15:07:39,883 - INFO - Using GPU: False
+2025-03-24 15:07:39,891 - INFO - Starting data preprocessing
+2025-03-24 15:07:39,899 - INFO - Data preprocessing completed
+2025-03-24 15:07:39,908 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 15:09:11,122 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 15:09:11,122 - INFO - Using GPU: False
+2025-03-24 15:09:11,129 - INFO - Starting data preprocessing
+2025-03-24 15:09:11,138 - INFO - Data preprocessing completed
+2025-03-24 15:09:11,146 - INFO - Model loaded from file ./data/model/catboost_model.cbm

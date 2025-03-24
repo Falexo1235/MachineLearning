@@ -182,8 +182,10 @@ class My_Classifier_Model:
         
         passenger_ids = test_data['PassengerId']
         X_test = test_data.drop(['PassengerId'], axis=1)
-        
-        predictions = model.predict(X_test)
+
+        #Починка внезапно появившейся ошибки        
+        test_pool = Pool(data=X_test, cat_features=self.categorical_features_indices)
+        predictions = model.predict(test_pool)
         
         submission = pd.DataFrame()
         submission['PassengerId'] = passenger_ids
