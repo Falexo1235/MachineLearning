@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 import logging
+import fire
 import shutil
 from catboost import CatBoostClassifier, Pool
 from sklearn.model_selection import train_test_split, StratifiedKFold
