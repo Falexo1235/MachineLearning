@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.metrics import accuracy_score, classification_report, roc_auc_score
 import optuna
 from catboost.utils import get_gpu_device_count
-
+from clearml import Task
 
 logging.basicConfig(
     filename='./data/log_file.log', 
@@ -71,6 +71,8 @@ class My_Classifier_Model:
         return df
     
     def _optimize_hyperparameters(self, X, y, use_gpu, n_trials, timeout=3600):
+        task= Task.current_task()
+        trials_data = []
         def objective(trial):
             params = {
                 'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.1),
@@ -96,8 +98,12 @@ class My_Classifier_Model:
 
                 preds = model.predict_proba(X_val)[:, 1]
                 cv_scores.append(roc_auc_score(y_val, preds))
-
-            return np.mean(cv_scores)
+            mean_score = np.mean(cv_scores)
+            trial_data = params.copy()
+            trial_data['trial_number'] = trial.number
+            trial_data['roc_auc'] = mean_score
+            trials_data.append(trial_data)
+            return mean_score
 
         study = optuna.create_study(direction="maximize")
         study.optimize(objective, n_trials=n_trials, timeout=timeout)
@@ -109,20 +115,43 @@ class My_Classifier_Model:
         print("  Params: ")
         for key, value in trial.params.items():
             print("    {}: {}".format(key, value))
-            
+        task.connect(study.best_params)
+        trials_df=pd.DataFrame(trials_data)
+        task.get_logger().report_table(
+            title="Trials",
+            series="Hyperparameters",
+            table_plot=trials_df
+        )
+        if len(trials_df)>1:
+            x = trials_df['trial_number'].tolist()
+            y = trials_df['roc_auc'].tolist()
+            points = [[x_val, y_val] for x_val, y_val in zip(x,y)]
+            task.get_logger().report_scatter2d(
+                title="Optimization progress",
+                series= "ROC AUC",
+                scatter=points,
+                mode="lines+markers",
+                xaxis="Trial number",
+                yaxis="ROC AUC"
+            )
         return trial.params
     
     def train(self, dataset, use_gpu=False, n_trials=10):
+        task = Task.init(project_name='ML_Project', task_name='ML_Train', reuse_last_task_id=False)
+        task.connect({
+            'use_gpu': use_gpu,
+            'n_trials': n_trials
+        })
         if use_gpu:
             use_gpu = self._check_gpu_support()
         logging.info(f"Starting model training with dataset: {dataset}")
         logging.info(f"Using GPU: {use_gpu}")
         
         train_data = pd.read_csv(dataset)
+        task.upload_artifact(name='train_dataset', artifact_object=dataset)
         train_data = self._preprocess_data(train_data)
         
         nulls = train_data.isnull().sum(axis=0)
-        print('Train nulls:', nulls[nulls > 0])
         
         X = train_data.drop(['PassengerId', 'Transported'], axis=1)
         y = train_data['Transported']
@@ -154,14 +183,34 @@ class My_Classifier_Model:
         roc_auc = round(roc_auc_score(y_validation, y_pred_proba), 4)
         logging.info(f"Model accuracy on validation set: {accuracy}")
         logging.info(f"Model ROC AUC on validation set: {roc_auc}")
-        print(classification_report(y_validation, y_pred))
-        
         model.save_model(self.model_path)
         logging.info(f"Model saved to file {self.model_path}")
-        
+        task.get_logger().report_scalar(
+            title='Validation metrics',
+            series='Accuracy',
+            value=accuracy,
+            iteration=0
+        )
+        task.get_logger().report_scalar(
+            title='Validation metrics',
+            series='ROC AUC',
+            value=roc_auc,
+            iteration=0
+        )
+        task.get_logger().report_text(
+
+            classification_report(y_validation, y_pred),
+            title='Classification report'
+        )
+        task.update_output_model(
+            model_path=self.model_path,
+            auto_delete_file=False
+        )
         return f"Model trained and saved successfully. Accuracy: {accuracy}, ROC AUC: {roc_auc}"
     
     def predict(self, dataset, use_gpu=False):
+        task = Task.init(project_name='ML_Project', task_name='ML_Predict', task_type='custom', reuse_last_task_id=False)
+        task.upload_artifact(name='test_dataset', artifact_object=dataset)
         logging.info(f"Starting prediction with dataset: {dataset}")
         logging.info(f"Using GPU: {use_gpu}")
         
@@ -174,7 +223,6 @@ class My_Classifier_Model:
         test_data = self._preprocess_data(test_data)
         
         nulls = test_data.isnull().sum(axis=0)
-        print('Test nulls:', nulls[nulls > 0])
         
         model = CatBoostClassifier()
         model.load_model(self.model_path)
@@ -194,6 +242,7 @@ class My_Classifier_Model:
         output_path = './data/result.csv'
         submission.to_csv(output_path, index=False)
         logging.info(f"Predictions file saved: {output_path}")
+        task.upload_artifact(name='result_dataset', artifact_object=output_path)
         
         return f"Predictions made and saved to {output_path}"
 

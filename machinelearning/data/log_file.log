@@ -439,3 +439,320 @@
 2025-03-24 15:09:11,129 - INFO - Starting data preprocessing
 2025-03-24 15:09:11,138 - INFO - Data preprocessing completed
 2025-03-24 15:09:11,146 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 15:20:37,223 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 15:20:37,223 - INFO - Using GPU: False
+2025-03-24 15:20:37,231 - INFO - Starting data preprocessing
+2025-03-24 15:20:37,240 - INFO - Data preprocessing completed
+2025-03-24 15:20:37,248 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 15:20:37,272 - INFO - Predictions file saved: ./data/result.csv
+2025-03-24 15:40:54,271 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 15:40:54,271 - INFO - Using GPU: False
+2025-03-24 15:40:54,278 - INFO - Starting data preprocessing
+2025-03-24 15:40:54,286 - INFO - Data preprocessing completed
+2025-03-24 15:40:54,294 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 15:41:19,753 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 15:41:19,753 - INFO - Using GPU: False
+2025-03-24 15:41:19,761 - INFO - Starting data preprocessing
+2025-03-24 15:41:19,770 - INFO - Data preprocessing completed
+2025-03-24 15:41:19,778 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 15:41:19,799 - INFO - Predictions file saved: ./data/result.csv
+2025-03-24 15:41:40,722 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 15:41:40,722 - INFO - Using GPU: False
+2025-03-24 15:41:40,729 - INFO - Starting data preprocessing
+2025-03-24 15:41:40,736 - INFO - Data preprocessing completed
+2025-03-24 15:41:40,745 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 15:42:26,492 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-24 15:42:26,492 - INFO - Using GPU: False
+2025-03-24 15:42:26,504 - INFO - Starting data preprocessing
+2025-03-24 15:42:26,517 - INFO - Data preprocessing completed
+2025-03-24 15:42:26,519 - INFO - Starting hyperparameter optimization
+2025-03-24 15:45:21,583 - INFO - Hyperparameter optimization completed
+2025-03-24 15:45:21,583 - INFO - Training the final model
+2025-03-24 15:45:33,549 - INFO - Model accuracy on validation set: 0.8085
+2025-03-24 15:45:33,549 - INFO - Model ROC AUC on validation set: 0.8983
+2025-03-24 15:45:33,639 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-24 15:45:39,042 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 15:45:39,042 - INFO - Using GPU: False
+2025-03-24 15:45:39,050 - INFO - Starting data preprocessing
+2025-03-24 15:45:39,057 - INFO - Data preprocessing completed
+2025-03-24 15:45:39,061 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 15:45:39,075 - INFO - Predictions file saved: ./data/result.csv
+2025-03-24 15:46:37,821 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-24 15:46:37,821 - INFO - Using GPU: False
+2025-03-24 15:46:37,833 - INFO - Starting data preprocessing
+2025-03-24 15:46:37,849 - INFO - Data preprocessing completed
+2025-03-24 15:46:37,852 - INFO - Starting hyperparameter optimization
+2025-03-24 15:48:45,847 - INFO - Hyperparameter optimization completed
+2025-03-24 15:48:45,847 - INFO - Training the final model
+2025-03-24 15:49:12,909 - INFO - Model accuracy on validation set: 0.8079
+2025-03-24 15:49:12,909 - INFO - Model ROC AUC on validation set: 0.8963
+2025-03-24 15:49:13,073 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-24 15:49:49,161 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 15:49:49,161 - INFO - Using GPU: False
+2025-03-24 15:49:49,168 - INFO - Starting data preprocessing
+2025-03-24 15:49:49,176 - INFO - Data preprocessing completed
+2025-03-24 15:49:49,187 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 15:49:49,210 - INFO - Predictions file saved: ./data/result.csv
+2025-03-24 15:50:32,003 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 15:50:32,003 - INFO - Using GPU: False
+2025-03-24 15:50:32,010 - INFO - Starting data preprocessing
+2025-03-24 15:50:32,019 - INFO - Data preprocessing completed
+2025-03-24 15:50:32,029 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 15:50:32,051 - INFO - Predictions file saved: ./data/result.csv
+2025-03-24 16:12:18,177 - INFO - Checking GPU compatibility...
+2025-03-24 16:12:18,179 - INFO - GPU is not supported, --use_gpu=False
+2025-03-24 16:12:18,179 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-24 16:12:18,179 - INFO - Using GPU: False
+2025-03-24 16:12:18,192 - INFO - Starting data preprocessing
+2025-03-24 16:12:18,207 - INFO - Data preprocessing completed
+2025-03-24 16:12:18,210 - INFO - Starting hyperparameter optimization
+2025-03-24 16:13:24,867 - INFO - Hyperparameter optimization completed
+2025-03-24 16:13:24,867 - INFO - Training the final model
+2025-03-24 16:13:29,146 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 16:13:29,146 - INFO - Using GPU: False
+2025-03-24 16:13:29,154 - INFO - Starting data preprocessing
+2025-03-24 16:13:29,163 - INFO - Data preprocessing completed
+2025-03-24 16:13:29,171 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 16:13:29,194 - INFO - Predictions file saved: ./data/result.csv
+2025-03-24 16:13:38,547 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-24 16:13:38,547 - INFO - Using GPU: False
+2025-03-24 16:13:38,554 - INFO - Starting data preprocessing
+2025-03-24 16:13:38,563 - INFO - Data preprocessing completed
+2025-03-24 16:13:38,572 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-24 16:13:38,607 - INFO - Predictions file saved: ./data/result.csv
+2025-03-27 11:35:22,017 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 11:35:22,017 - INFO - Using GPU: False
+2025-03-27 11:35:22,048 - INFO - Starting data preprocessing
+2025-03-27 11:35:22,064 - INFO - Data preprocessing completed
+2025-03-27 11:35:22,150 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-27 11:35:22,201 - INFO - Predictions file saved: ./data/result.csv
+2025-03-27 11:35:58,366 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 11:35:58,367 - INFO - Using GPU: False
+2025-03-27 11:35:58,374 - INFO - Starting data preprocessing
+2025-03-27 11:35:58,383 - INFO - Data preprocessing completed
+2025-03-27 11:35:58,391 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-27 11:35:58,412 - INFO - Predictions file saved: ./data/result.csv
+2025-03-27 11:37:18,455 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 11:37:18,455 - INFO - Using GPU: False
+2025-03-27 11:37:18,470 - INFO - Starting data preprocessing
+2025-03-27 11:37:18,481 - INFO - Data preprocessing completed
+2025-03-27 11:37:18,615 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-27 11:37:18,641 - INFO - Predictions file saved: ./data/result.csv
+2025-03-27 11:38:15,121 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 11:38:15,121 - INFO - Using GPU: False
+2025-03-27 11:38:15,130 - INFO - Starting data preprocessing
+2025-03-27 11:38:15,140 - INFO - Data preprocessing completed
+2025-03-27 11:38:15,297 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-27 11:38:15,323 - INFO - Predictions file saved: ./data/result.csv
+2025-03-27 11:38:31,426 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 11:38:31,426 - INFO - Using GPU: False
+2025-03-27 11:38:31,458 - INFO - Starting data preprocessing
+2025-03-27 11:38:31,480 - INFO - Data preprocessing completed
+2025-03-27 11:38:31,483 - INFO - Starting hyperparameter optimization
+2025-03-27 11:39:27,069 - INFO - Hyperparameter optimization completed
+2025-03-27 11:39:27,069 - INFO - Training the final model
+2025-03-27 11:40:04,337 - INFO - Model accuracy on validation set: 0.8068
+2025-03-27 11:40:04,338 - INFO - Model ROC AUC on validation set: 0.8987
+2025-03-27 11:40:04,711 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 11:44:32,638 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 11:44:32,639 - INFO - Using GPU: False
+2025-03-27 11:44:55,244 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 11:44:55,244 - INFO - Using GPU: False
+2025-03-27 11:44:55,254 - INFO - Starting data preprocessing
+2025-03-27 11:44:55,264 - INFO - Data preprocessing completed
+2025-03-27 11:44:55,436 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-27 11:44:55,457 - INFO - Predictions file saved: ./data/result.csv
+2025-03-27 11:46:32,046 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 11:46:32,047 - INFO - Using GPU: False
+2025-03-27 11:46:32,061 - INFO - Starting data preprocessing
+2025-03-27 11:46:32,082 - INFO - Data preprocessing completed
+2025-03-27 11:46:32,085 - INFO - Starting hyperparameter optimization
+2025-03-27 11:47:48,274 - INFO - Hyperparameter optimization completed
+2025-03-27 11:47:48,274 - INFO - Training the final model
+2025-03-27 11:48:02,401 - INFO - Model accuracy on validation set: 0.8097
+2025-03-27 11:48:02,401 - INFO - Model ROC AUC on validation set: 0.892
+2025-03-27 11:48:02,761 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 12:01:35,715 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 12:01:35,716 - INFO - Using GPU: False
+2025-03-27 12:01:35,735 - INFO - Starting data preprocessing
+2025-03-27 12:01:35,752 - INFO - Data preprocessing completed
+2025-03-27 12:01:35,760 - INFO - Starting hyperparameter optimization
+2025-03-27 12:02:29,166 - INFO - Hyperparameter optimization completed
+2025-03-27 12:02:29,166 - INFO - Training the final model
+2025-03-27 12:02:40,136 - INFO - Model accuracy on validation set: 0.8114
+2025-03-27 12:02:40,136 - INFO - Model ROC AUC on validation set: 0.8959
+2025-03-27 12:02:40,527 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 12:06:57,614 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 12:06:57,614 - INFO - Using GPU: False
+2025-03-27 12:06:57,690 - INFO - Starting data preprocessing
+2025-03-27 12:06:57,708 - INFO - Data preprocessing completed
+2025-03-27 12:06:57,711 - INFO - Starting hyperparameter optimization
+2025-03-27 12:07:45,508 - INFO - Hyperparameter optimization completed
+2025-03-27 12:07:45,508 - INFO - Training the final model
+2025-03-27 12:07:53,228 - INFO - Model accuracy on validation set: 0.8097
+2025-03-27 12:07:53,228 - INFO - Model ROC AUC on validation set: 0.8974
+2025-03-27 12:07:53,583 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 12:22:00,442 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 12:22:00,442 - INFO - Using GPU: False
+2025-03-27 12:22:00,499 - INFO - Starting data preprocessing
+2025-03-27 12:22:00,516 - INFO - Data preprocessing completed
+2025-03-27 12:22:00,519 - INFO - Starting hyperparameter optimization
+2025-03-27 12:26:56,057 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 12:26:56,057 - INFO - Using GPU: False
+2025-03-27 12:26:56,141 - INFO - Starting data preprocessing
+2025-03-27 12:26:56,156 - INFO - Data preprocessing completed
+2025-03-27 12:26:56,158 - INFO - Starting hyperparameter optimization
+2025-03-27 12:34:52,828 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 12:34:52,829 - INFO - Using GPU: False
+2025-03-27 12:34:52,881 - INFO - Starting data preprocessing
+2025-03-27 12:34:52,899 - INFO - Data preprocessing completed
+2025-03-27 12:34:52,902 - INFO - Starting hyperparameter optimization
+2025-03-27 12:37:21,536 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 12:37:21,536 - INFO - Using GPU: False
+2025-03-27 12:37:21,606 - INFO - Starting data preprocessing
+2025-03-27 12:37:21,623 - INFO - Data preprocessing completed
+2025-03-27 12:37:21,626 - INFO - Starting hyperparameter optimization
+2025-03-27 12:38:36,266 - INFO - Hyperparameter optimization completed
+2025-03-27 12:38:36,266 - INFO - Training the final model
+2025-03-27 12:39:23,042 - INFO - Model accuracy on validation set: 0.8114
+2025-03-27 12:39:23,042 - INFO - Model ROC AUC on validation set: 0.8994
+2025-03-27 12:39:23,474 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 12:40:20,668 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 12:40:20,668 - INFO - Using GPU: False
+2025-03-27 12:40:20,668 - ERROR - Model not found in path ./data/model/catboost_model.cbm. Start the training first.
+2025-03-27 12:46:29,917 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 12:46:29,917 - INFO - Using GPU: False
+2025-03-27 12:46:29,928 - INFO - Starting data preprocessing
+2025-03-27 12:46:29,937 - INFO - Data preprocessing completed
+2025-03-27 12:46:30,138 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-27 12:46:30,159 - INFO - Predictions file saved: ./data/result.csv
+2025-03-27 12:47:49,515 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 12:47:49,515 - INFO - Using GPU: False
+2025-03-27 12:47:49,606 - INFO - Starting data preprocessing
+2025-03-27 12:47:49,621 - INFO - Data preprocessing completed
+2025-03-27 12:47:49,624 - INFO - Starting hyperparameter optimization
+2025-03-27 12:52:49,854 - INFO - Hyperparameter optimization completed
+2025-03-27 12:52:49,854 - INFO - Training the final model
+2025-03-27 12:53:40,970 - INFO - Model accuracy on validation set: 0.812
+2025-03-27 12:53:40,970 - INFO - Model ROC AUC on validation set: 0.8982
+2025-03-27 12:53:41,405 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 12:56:19,380 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 12:56:19,380 - INFO - Using GPU: False
+2025-03-27 12:56:19,454 - INFO - Starting data preprocessing
+2025-03-27 12:56:19,470 - INFO - Data preprocessing completed
+2025-03-27 12:56:19,473 - INFO - Starting hyperparameter optimization
+2025-03-27 12:57:27,168 - INFO - Hyperparameter optimization completed
+2025-03-27 12:57:27,168 - INFO - Training the final model
+2025-03-27 12:57:39,940 - INFO - Model accuracy on validation set: 0.8131
+2025-03-27 12:57:39,940 - INFO - Model ROC AUC on validation set: 0.8989
+2025-03-27 12:57:40,317 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 13:05:50,553 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 13:05:50,553 - INFO - Using GPU: False
+2025-03-27 13:05:50,563 - INFO - Starting data preprocessing
+2025-03-27 13:05:50,573 - INFO - Data preprocessing completed
+2025-03-27 13:05:50,760 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-27 13:05:50,777 - INFO - Predictions file saved: ./data/result.csv
+2025-03-27 13:09:22,214 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 13:09:22,214 - INFO - Using GPU: False
+2025-03-27 13:09:22,215 - ERROR - Model not found in path ./data/model/catboost_model.cbm. Start the training first.
+2025-03-27 13:23:28,301 - INFO - Starting prediction with dataset: ./data/test.csv
+2025-03-27 13:23:28,301 - INFO - Using GPU: False
+2025-03-27 13:23:28,317 - INFO - Starting data preprocessing
+2025-03-27 13:23:28,332 - INFO - Data preprocessing completed
+2025-03-27 13:23:28,492 - INFO - Model loaded from file ./data/model/catboost_model.cbm
+2025-03-27 13:23:28,510 - INFO - Predictions file saved: ./data/result.csv
+2025-03-27 13:23:44,497 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:23:44,498 - INFO - Using GPU: False
+2025-03-27 13:23:44,566 - INFO - Starting data preprocessing
+2025-03-27 13:23:44,580 - INFO - Data preprocessing completed
+2025-03-27 13:23:44,583 - INFO - Starting hyperparameter optimization
+2025-03-27 13:26:44,675 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:26:44,678 - INFO - Using GPU: False
+2025-03-27 13:26:44,752 - INFO - Starting data preprocessing
+2025-03-27 13:26:44,766 - INFO - Data preprocessing completed
+2025-03-27 13:26:44,769 - INFO - Starting hyperparameter optimization
+2025-03-27 13:28:48,197 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:28:48,198 - INFO - Using GPU: False
+2025-03-27 13:28:48,271 - INFO - Starting data preprocessing
+2025-03-27 13:28:48,288 - INFO - Data preprocessing completed
+2025-03-27 13:28:48,291 - INFO - Starting hyperparameter optimization
+2025-03-27 13:31:01,328 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:31:01,328 - INFO - Using GPU: False
+2025-03-27 13:31:01,423 - INFO - Starting data preprocessing
+2025-03-27 13:31:01,438 - INFO - Data preprocessing completed
+2025-03-27 13:31:01,441 - INFO - Starting hyperparameter optimization
+2025-03-27 13:31:50,742 - INFO - Hyperparameter optimization completed
+2025-03-27 13:31:50,743 - INFO - Training the final model
+2025-03-27 13:32:00,231 - INFO - Model accuracy on validation set: 0.8033
+2025-03-27 13:32:00,231 - INFO - Model ROC AUC on validation set: 0.8924
+2025-03-27 13:32:00,631 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 13:34:09,842 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:34:09,843 - INFO - Using GPU: False
+2025-03-27 13:34:09,935 - INFO - Starting data preprocessing
+2025-03-27 13:34:09,950 - INFO - Data preprocessing completed
+2025-03-27 13:34:09,953 - INFO - Starting hyperparameter optimization
+2025-03-27 13:41:38,437 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:41:38,438 - INFO - Using GPU: False
+2025-03-27 13:41:38,518 - INFO - Starting data preprocessing
+2025-03-27 13:41:38,535 - INFO - Data preprocessing completed
+2025-03-27 13:41:38,537 - INFO - Starting hyperparameter optimization
+2025-03-27 13:48:32,705 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:48:32,705 - INFO - Using GPU: False
+2025-03-27 13:48:32,777 - INFO - Starting data preprocessing
+2025-03-27 13:48:32,792 - INFO - Data preprocessing completed
+2025-03-27 13:48:32,794 - INFO - Starting hyperparameter optimization
+2025-03-27 13:48:45,886 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:48:45,886 - INFO - Using GPU: False
+2025-03-27 13:48:45,967 - INFO - Starting data preprocessing
+2025-03-27 13:48:45,982 - INFO - Data preprocessing completed
+2025-03-27 13:48:45,984 - INFO - Starting hyperparameter optimization
+2025-03-27 13:49:28,100 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:49:28,100 - INFO - Using GPU: False
+2025-03-27 13:49:28,177 - INFO - Starting data preprocessing
+2025-03-27 13:49:28,193 - INFO - Data preprocessing completed
+2025-03-27 13:49:28,196 - INFO - Starting hyperparameter optimization
+2025-03-27 13:53:41,615 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:53:41,615 - INFO - Using GPU: False
+2025-03-27 13:53:41,694 - INFO - Starting data preprocessing
+2025-03-27 13:53:41,714 - INFO - Data preprocessing completed
+2025-03-27 13:53:41,718 - INFO - Starting hyperparameter optimization
+2025-03-27 13:56:45,071 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:56:45,071 - INFO - Using GPU: False
+2025-03-27 13:56:45,165 - INFO - Starting data preprocessing
+2025-03-27 13:56:45,179 - INFO - Data preprocessing completed
+2025-03-27 13:56:45,182 - INFO - Starting hyperparameter optimization
+2025-03-27 13:57:11,821 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 13:57:11,821 - INFO - Using GPU: False
+2025-03-27 13:57:11,884 - INFO - Starting data preprocessing
+2025-03-27 13:57:11,900 - INFO - Data preprocessing completed
+2025-03-27 13:57:11,903 - INFO - Starting hyperparameter optimization
+2025-03-27 13:58:19,186 - INFO - Hyperparameter optimization completed
+2025-03-27 13:58:19,186 - INFO - Training the final model
+2025-03-27 13:58:24,645 - INFO - Model accuracy on validation set: 0.8039
+2025-03-27 13:58:24,645 - INFO - Model ROC AUC on validation set: 0.8973
+2025-03-27 13:58:25,047 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 14:05:26,238 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 14:05:26,239 - INFO - Using GPU: False
+2025-03-27 14:05:26,331 - INFO - Starting data preprocessing
+2025-03-27 14:05:26,351 - INFO - Data preprocessing completed
+2025-03-27 14:05:26,354 - INFO - Starting hyperparameter optimization
+2025-03-27 14:08:21,438 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 14:08:21,438 - INFO - Using GPU: False
+2025-03-27 14:08:21,525 - INFO - Starting data preprocessing
+2025-03-27 14:08:21,542 - INFO - Data preprocessing completed
+2025-03-27 14:08:21,545 - INFO - Starting hyperparameter optimization
+2025-03-27 14:10:01,759 - INFO - Hyperparameter optimization completed
+2025-03-27 14:10:01,759 - INFO - Training the final model
+2025-03-27 14:10:58,584 - INFO - Model accuracy on validation set: 0.8131
+2025-03-27 14:10:58,584 - INFO - Model ROC AUC on validation set: 0.8997
+2025-03-27 14:10:58,970 - INFO - Model saved to file ./data/model/catboost_model.cbm
+2025-03-27 14:29:08,224 - INFO - Starting model training with dataset: ./data/train.csv
+2025-03-27 14:29:08,224 - INFO - Using GPU: False
+2025-03-27 14:29:08,302 - INFO - Starting data preprocessing
+2025-03-27 14:29:08,318 - INFO - Data preprocessing completed
+2025-03-27 14:29:08,320 - INFO - Starting hyperparameter optimization
+2025-03-27 14:40:53,803 - INFO - Hyperparameter optimization completed
+2025-03-27 14:40:53,803 - INFO - Training the final model
+2025-03-27 14:41:01,586 - INFO - Model accuracy on validation set: 0.8068
+2025-03-27 14:41:01,586 - INFO - Model ROC AUC on validation set: 0.8984
+2025-03-27 14:41:02,013 - INFO - Model saved to file ./data/model/catboost_model.cbm
